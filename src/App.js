@@ -1,25 +1,64 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
+import { Navbar, Nav, Container } from 'react-bootstrap';
+import RegistrationForm from './Forms/RegistrationForm';
+import LoginForm from './Forms/LoginForm';
+import Home from './Forms/Home';
+import LK from './Forms/LK';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-function App() {
+const HomeRoute = () => {
+  const { isAuthenticated } = useAuth();
+  return !isAuthenticated ? <Home/> : <Navigate to="/lk" />;
+};
+
+const AppContent = () => {
+
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar bg="dark" variant="dark" expand="lg" className="navbar">
+        <Container>
+          <Navbar.Brand as={Link} to="/">Домашняя страница</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/register">Страница регистрации</Nav.Link>
+              <Nav.Link as={Link} to="/login">Страница авторизации</Nav.Link>
+              <Nav.Link onClick={handleLogout}>Выйти из системы</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
+      <Container className="mt-3">
+        <Routes>
+          <Route path="/" element={<HomeRoute />} />
+          <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/lk" element={<LK />} />
+        </Routes>
+      </Container>
+    </>
   );
-}
+};
+
+const App = () => {
+  return (
+    <Router>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </Router>
+  );
+};
 
 export default App;

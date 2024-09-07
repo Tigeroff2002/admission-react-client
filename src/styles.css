@@ -1,0 +1,164 @@
+/* styles.css */
+
+/* Определение переменных для темной темы */
+:root {
+    --primary-bg-color: #121212; /* Основной фон */
+    --secondary-bg-color: #1e1e1e; /* Вторичный фон */
+    --primary-text-color: #e0e0e0; /* Основной текст */
+    --secondary-text-color: #b0b0b0; /* Вторичный текст */
+    --accent-color: #bb86fc; /* Акцентный цвет */
+    --button-bg-color: #333333; /* Фон кнопок */
+    --button-text-color: #e0e0e0; /* Текст кнопок */
+    --border-color: #333333; /* Цвет границ */
+    --input-bg-color: #2a2a2a; /* Фон для инпутов */
+    --input-text-color: #e0e0e0; /* Текст инпутов */
+    --hover-bg-color: #333333; /* Фон при наведении */
+    --link-color: #bb86fc; /* Цвет ссылок */
+    --link-hover-color: #d1aaff; /* Цвет ссылок при наведении */
+  }
+  
+  /* Общий фон и цвет текста */
+  body {
+    background-color: var(--primary-bg-color);
+    color: var(--primary-text-color);
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Заголовки */
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-text-color);
+    margin-bottom: 1rem;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+  
+  /* Ссылки */
+  a {
+    color: var(--link-color);
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+  }
+  
+  /* Навигационная панель */
+  .navbar {
+    background-color: var(--secondary-bg-color) !important;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem;
+  }
+  
+  .navbar a {
+    color: var(--primary-text-color) !important;
+    padding: 0.5rem 1rem;
+  }
+  
+  .navbar a:hover {
+    background-color: var(--hover-bg-color);
+    border-radius: 4px;
+  }
+  
+  /* Кнопки */
+  button, .btn {
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover, .btn:hover {
+    background-color: var(--hover-bg-color);
+  }
+  
+  /* Формы и инпуты */
+  input, textarea, select {
+    background-color: var(--input-bg-color);
+    color: var(--input-text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+  
+  input::placeholder, textarea::placeholder {
+    color: var(--secondary-text-color);
+  }
+  
+  /* Карточки */
+  .card {
+    background-color: var(--secondary-bg-color);
+    color: var(--primary-text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Табы и навигация */
+  .nav-tabs {
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .nav-tabs .nav-link {
+    color: var(--secondary-text-color);
+    background-color: transparent;
+    border: 1px solid transparent;
+  }
+  
+  .nav-tabs .nav-link.active {
+    color: var(--primary-text-color);
+    background-color: var(--secondary-bg-color);
+    border-color: var(--border-color);
+  }
+  
+  /* Таблицы */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+  }
+  
+  th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border: 1px solid var(--border-color);
+  }
+  
+  th {
+    background-color: var(--secondary-bg-color);
+    color: var(--primary-text-color);
+  }
+  
+  td {
+    background-color: var(--primary-bg-color);
+    color: var(--secondary-text-color);
+  }
+  
+  /* Подвальные ссылки */
+  .footer {
+    background-color: var(--secondary-bg-color);
+    color: var(--secondary-text-color);
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .footer a {
+    color: var(--link-color);
+  }
+  
+  .footer a:hover {
+    color: var(--link-hover-color);
+  }  
