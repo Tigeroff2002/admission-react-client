@@ -1,33 +1,30 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState } from 'react';
 
-// Create the AuthContext
-export const AuthContext = createContext(); // Make sure to export AuthContext
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userData, setUserData] = useState(null);  // To store additional user information
+  const [userData, setUserData] = useState(() => {
+    // Retrieve user data from local storage or initialize with default values
+    const savedData = localStorage.getItem('userData');
+    return savedData ? JSON.parse(savedData) : {};
+  });
 
-  // Updated login function to accept user credentials or data
-  const login = (user) => {
-    setIsAuthenticated(true);
-    setUserData(user); // Save user data on login
+  const login = (data) => {
+    setUserData(data);
+    // Save user data to local storage
+    localStorage.setItem('userData', JSON.stringify(data));
   };
 
-  // Updated logout function to accept arguments
-  const logout = (callback) => {
-    setIsAuthenticated(false);
-    setUserData(null);  // Clear user data on logout
-    if (callback) {
-      callback(); // Perform additional actions if needed
-    }
+  const logout = () => {
+    setUserData({});
+    // Clear user data from local storage
+    localStorage.removeItem('userData');
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userData, login, logout }}>
+    <AuthContext.Provider value={{ userData, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Hook to use the AuthContext
-export const useAuth = () => useContext(AuthContext);

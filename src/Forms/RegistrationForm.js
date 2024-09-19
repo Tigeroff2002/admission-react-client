@@ -159,8 +159,8 @@ class RegistrationForm extends Component {
       .then((response) => {
         if (response.status === 200) {
           if (response.data['result'] === true) {
-            const { abiturient_id, token } = response.data;
-            const obj = { abiturient_id, token };
+            const { abiturient_id, token, is_admin } = response.data;
+            const obj = { abiturient_id, token, is_admin };
 
             login(obj); // Call login function
 
