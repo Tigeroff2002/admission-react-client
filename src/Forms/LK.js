@@ -63,26 +63,28 @@ class LK extends Component {
     }
 
     return (
-      <Container className="d-flex justify-content-center align-items-top" style={{ minHeight: '100vh' }}>
+      <Container className="d-flex justify-content-center align-items-top bg-dark text-dark" style={{ minHeight: '100vh' }}>
         <Card className="card p-4" style={{ maxWidth: '1200px', width: '100%', maxHeight: '900px' }}>
-          <div className="text-center mb-4">
+          <div className="text-center mb-4 bg-dark text-dark">
             <Image
               src={profilePictureUrl}
               roundedCircle
               style={{ width: '150px', height: '150px', objectFit: 'cover' }}
               alt="User Profile"
             />
+          </div>
+          <div className='text-center mb-4'>
             <h2 className="mt-2">Ваш личный кабинет, {name}</h2>
           </div>
 
           {isAdmin ? (
             <div className="text-center">
-              <Button variant="primary" onClick={this.handleAdminButtonClick}>
+              <Button variant="dark" onClick={this.handleAdminButtonClick}>
                 Панель админа
               </Button>
             </div>
           ) : directionsLinks.length > 0 ? (
-            <div>
+            <div className='bg-dark text-dark'>
             <br></br>
             <h4 className="mt-2">Список ваших направлений:</h4>
             <Table striped bordered hover>
@@ -109,6 +111,10 @@ class LK extends Component {
                 ))}
               </tbody>
             </Table>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
             </div>
           ) : (
             <p className="text-center">Нет данных для отображения.</p>

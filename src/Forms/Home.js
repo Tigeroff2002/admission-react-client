@@ -6,7 +6,7 @@ import '../styles.css';
 
 const Home = () => {
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+    <Container className="d-flex justify-content-center align-items-center bg-dark text-dark" style={{ minHeight: '100vh' }}>
       <Card className="card p-4" style={{ maxWidth: '600px', width: '100%' }}>
         <h2 className="text-center mb-4">Вы не авторизованы, вам не доступен личный кабинет</h2>
         <nav>
@@ -16,7 +16,7 @@ const Home = () => {
                 Страница регистрации
               </Link>
             </ListGroup.Item>
-            <ListGroup.Item className="bg-transparent">
+            <ListGroup.Item className="bg-transparent ">
               <Link to="/login" className="text-decoration-none" style={{ color: 'var(--link-color)' }}>
                 Страница авторизации
               </Link>

@@ -102,9 +102,9 @@ class AdminLK extends Component {
     const { profilePictureUrl, abiturients, selectedAbiturientId, isAdmin } = this.state;
 
     return (
-      <Container className="d-flex justify-content-center align-items-top" style={{ minHeight: '100vh' }}>
+      <Container className="d-flex justify-content-center align-items-top bg-dark text-dark" style={{ minHeight: '100vh' }}>
         <Card className="card p-4" style={{ maxWidth: '1200px', width: '100%', maxHeight: '900px' }}>
-          <div className="text-center mb-4">
+          <div className="text-center mb-4 bg-dark text-dark">
             <Image
               src={profilePictureUrl}
               roundedCircle
@@ -120,6 +120,7 @@ class AdminLK extends Component {
               <h2 className="mt-2">Панель админа</h2>
               <br></br>
               <h4 className="mt-2">Список абитуриентов</h4>
+              <div className='bg-dark text-dark'>
               <Table striped bordered hover>
                 <thead>
                   <tr>
@@ -158,7 +159,7 @@ class AdminLK extends Component {
                                 </Button>
 
                                 {/* Close button to hide the form */}
-                                <Button variant="secondary" onClick={this.handleCloseForm}>
+                                <Button variant="dark" onClick={this.handleCloseForm}>
                                   Закрыть
                                 </Button>
                               </div>
@@ -170,6 +171,7 @@ class AdminLK extends Component {
                   ))}
                 </tbody>
               </Table>
+              </div>
             </div>
           ) : (
             <p className="text-center">Нет данных для отображения.</p>

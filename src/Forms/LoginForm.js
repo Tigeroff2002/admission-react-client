@@ -175,7 +175,7 @@ class LoginForm extends Component {
     const { email: emailStyle, password: passwordStyle } = this.state.inputStyles;
 
     return (
-      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+      <Container className="d-flex justify-content-center align-items-center bg-dark text-dark" style={{ minHeight: '100vh' }}>
         <Card className="card p-4" style={{ maxWidth: '400px', width: '100%' }}>
           <h2 className="text-center mb-4">Вход</h2>
           <Form onSubmit={this.handleSubmit}>
@@ -207,7 +207,7 @@ class LoginForm extends Component {
               {passwordError && <Form.Text className="text-danger">{passwordError}</Form.Text>}
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100">
+            <Button variant="dark" type="submit" className="w-100">
               Войти
             </Button>
           </Form>

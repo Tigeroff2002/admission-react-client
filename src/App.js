@@ -18,6 +18,7 @@ const HomeRoute = () => {
 // AppContent component contains the navigation and routes
 const AppContent = () => {
   const { logout } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {

@@ -204,7 +204,7 @@ class RegistrationForm extends Component {
     const { formData, errors } = this.state;
 
     return (
-      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+      <Container className="d-flex justify-content-center align-items-center bg-dark text-dark" style={{ minHeight: '100vh' }}>
         <Card className="card p-4" style={{ maxWidth: '400px', width: '100%' }}>
           <h2 className="text-center mb-4">Регистрация</h2>
           <Form onSubmit={this.handleSubmit}>
@@ -274,7 +274,7 @@ class RegistrationForm extends Component {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100">
+            <Button variant="dark" type="submit" className="w-100">
               Зарегистрироваться
             </Button>
           </Form>
