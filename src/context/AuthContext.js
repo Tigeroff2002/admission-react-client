@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext } from 'react';
 
 // Создаем контекст для аутентификации
-const AuthContext = createContext();
+const AuthContext = (userData) => createContext(userData);
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,4 +17,4 @@ export const AuthProvider = ({ children }) => {
 };
 
 // Хук для использования контекста
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = (userData) => useContext(AuthContext(userData));

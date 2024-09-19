@@ -17,7 +17,7 @@ const LoginForm = () => {
 
   const passwordInvaidMessage = 'Пароль должен содержать как минимум 8 символов, один заглавный символ и одну цифру.';
 
-  const { login } = useAuth();
+  const { login } = (userData) => useAuth(userData);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -45,7 +45,42 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    login();
+    var body = {
+      email: 'gmail',
+      password: '1111'
+    }
+
+    var responseObject = null;
+
+    // https://stackoverflow.com/questions/49377363/how-to-send-request-to-server-with-reactjs
+    e.preventDefault();
+    fetch('http://localhost:8000/login', {
+      body: JSON.stringify(body),
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST',
+      mode: 'cors',
+      redirect: 'follow',
+      referrer: 'no-referrer',
+    })
+      .then(function (response) {
+        console.log(response);
+        if (response.status === 200) {
+          alert('Saved');
+          responseObject = JSON.parse(response.body);
+
+        } else {
+          alert('Issues saving');
+        }
+      });
+
+      var abiturientId = responseObject['abiturient_id'];
+      var token = responseObject['token'];
+
+    login({abiturientId: abiturientId, token: token});
 
     navigate('/lk');
   };
