@@ -17,7 +17,8 @@ const LoginForm = () => {
 
   const passwordInvaidMessage = 'Пароль должен содержать как минимум 8 символов, один заглавный символ и одну цифру.';
 
-  const { login } = (userData) => useAuth(userData);
+  const { login } = useAuth();
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -45,9 +46,12 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    var email = e.target.name.value;
+    var password = e.target.password.value;
+
     var body = {
-      email: 'gmail',
-      password: '1111'
+      email: email,
+      password: password
     }
 
     var responseObject = null;
@@ -80,7 +84,9 @@ const LoginForm = () => {
       var abiturientId = responseObject['abiturient_id'];
       var token = responseObject['token'];
 
-    login({abiturientId: abiturientId, token: token});
+    var obj = {abiturientId: abiturientId, token: token};
+
+    login();
 
     navigate('/lk');
   };
