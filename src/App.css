@@ -2,6 +2,22 @@
   text-align: center;
 }
 
+.table-responsive {
+  overflow-x: auto; /* Enables horizontal scrolling */
+}
+
+.table {
+  width: 100%; /* Ensures the table takes full width */
+  min-width: 600px; /* Minimum width to avoid table collapse */
+}
+
+/* Optional: Improve text readability on smaller screens */
+@media (max-width: 768px) {
+  .table th, .table td {
+    font-size: 0.9em; /* Adjust font size */
+  }
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

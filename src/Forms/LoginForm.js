@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Form, Button, Container, Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 import axios from 'axios';
 
-// Functional wrapper component to use useNavigate hook
 const LoginFormWrapper = () => {
   const navigate = useNavigate();
 
@@ -13,7 +12,7 @@ const LoginFormWrapper = () => {
 };
 
 class LoginForm extends Component {
-  static contextType = AuthContext; // Set contextType to use AuthContext
+  static contextType = AuthContext;
 
   constructor(props) {
     super(props);

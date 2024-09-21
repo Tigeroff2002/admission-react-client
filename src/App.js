@@ -7,6 +7,11 @@ import Home from './Forms/Home';
 import LK from './Forms/LK';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import AdminLK from './Forms/AdminLK';
+import DirectionsPage from './Forms/DirectionsPage';
+import DirectionPage from './Forms/DirectionPage';
+import LKWrapper from './Forms/LK';
+import AdminLKWithNavigate from './Forms/AdminLK';
+import DirectionsPageWithNavigate from './Forms/DirectionPage';
 
 // HomeRoute component to redirect based on authentication status
 const HomeRoute = () => {
@@ -26,6 +31,14 @@ const AppContent = () => {
     navigate('/');
   };
 
+  const handleAllDirections = () => {
+    navigate('/directions');
+  }
+
+  const handleLK = () => {
+    navigate('/lk');
+  }
+
   const { userData } = useContext(AuthContext);
   const isAuthenticated = !!userData.token;
 
@@ -39,7 +52,11 @@ const AppContent = () => {
             <Nav className="me-auto">
             {
               isAuthenticated ? (
+                <>
               <Nav.Link onClick={handleLogout}>Выйти из системы</Nav.Link>
+              <Nav.Link onClick={handleAllDirections}>Все направления</Nav.Link>
+              <Nav.Link onClick={handleLK}>Ваш ЛК</Nav.Link>
+              </>
             ) : (
               <>
               <Nav.Link as={Link} to="/register">Страница регистрации</Nav.Link>
@@ -57,8 +74,10 @@ const AppContent = () => {
           <Route path="/" element={<HomeRoute />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/lk" element={<LK />} />
-          <Route path="/adminLK" element={<AdminLK />} />
+          <Route path="/lk" element={<LKWrapper />} />
+          <Route path="/adminLK" element={<AdminLKWithNavigate />} />
+          <Route path='/directions' element={<DirectionsPageWithNavigate />} />
+          <Route path='/direction/:id' element={<DirectionsPageWithNavigate />} />
         </Routes>
       </Container>
     </>

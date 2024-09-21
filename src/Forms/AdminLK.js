@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { Container, Card, Image, Table, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+const AdminLKWithNavigate = (props) => {
+  const navigate = useNavigate();
+  return <AdminLK {...props} navigate={navigate} />;
+};
 
 class AdminLK extends Component {
   state = {
@@ -34,11 +40,10 @@ class AdminLK extends Component {
             abiturients: content['abiturients'] || [],
             isAdmin: isAdmin,
           });
+        } else {
+          window.location.href = '/';
+          return;
         }
-        else {
-            window.location.href = '/';
-            return;
-          }
       })
       .catch((error) => {
         console.log('Error with API request', error);
@@ -98,6 +103,11 @@ class AdminLK extends Component {
     });
   };
 
+  // Handle redirect to LK page
+  handleRedirect = () => {
+    this.props.navigate('/lk'); // Navigate using navigate prop passed by the wrapper component
+  };
+
   render() {
     const { profilePictureUrl, abiturients, selectedAbiturientId, isAdmin } = this.state;
 
@@ -121,10 +131,10 @@ class AdminLK extends Component {
               <br></br>
               <h4 className="mt-2">Список абитуриентов</h4>
               <div className='bg-dark text-dark'>
+              <div className="table-responsive">
               <Table striped bordered hover>
                 <thead>
                   <tr>
-                    <th>Идентификатор абитуриента</th>
                     <th>Имя абитуриента</th>
                     <th>Подавал доки?</th>
                     <th>Уже зачислен?</th>
@@ -134,7 +144,6 @@ class AdminLK extends Component {
                   {abiturients.map((item) => (
                     <React.Fragment key={item.abiturient_id}>
                       <tr onClick={() => this.handleRowClick(item)}>
-                        <td>{item.abiturient_id}</td>
                         <td>{item.abiturient_name}</td>
                         <td>{item.is_requested ? 'Да' : 'Нет'}</td>
                         <td>{item.is_enrolled ? 'Да' : 'Нет'}</td>
@@ -142,7 +151,6 @@ class AdminLK extends Component {
                       {selectedAbiturientId === item.abiturient_id && (
                         <tr>
                           <td colSpan="4">
-                            {/* Render file upload form below the clicked row */}
                             <Form onSubmit={this.handleSubmit}>
                               <Form.Group controlId="fileUpload">
                                 <Form.Label>Загрузите .csv файл</Form.Label>
@@ -158,7 +166,6 @@ class AdminLK extends Component {
                                   Сохранить
                                 </Button>
 
-                                {/* Close button to hide the form */}
                                 <Button variant="dark" onClick={this.handleCloseForm}>
                                   Закрыть
                                 </Button>
@@ -172,10 +179,18 @@ class AdminLK extends Component {
                 </tbody>
               </Table>
               </div>
+              </div>
             </div>
           ) : (
-            <p className="text-center">Нет данных для отображения.</p>
+            <p className="text-center">Пока нет данных для отображения.</p>
           )}
+          
+          <div className="text-center mt-4">
+            <Button variant="secondary" onClick={this.handleRedirect}>
+              Вернуться в ЛК
+            </Button>
+          </div>
+          
         </Card>
       </Container>
     );
@@ -184,4 +199,4 @@ class AdminLK extends Component {
 
 AdminLK.contextType = AuthContext;
 
-export default AdminLK;
+export default AdminLKWithNavigate;
