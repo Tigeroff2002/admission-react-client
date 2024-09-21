@@ -27,7 +27,6 @@ class DirectionsPage extends Component {
     const abiturient_id = userData['abiturient_id'];
     const token = userData['token'];
 
-    // Make the API request to get the directions
     axios
       .post('http://localhost:8000/directions', { abiturient_id, token })
       .then((response) => {

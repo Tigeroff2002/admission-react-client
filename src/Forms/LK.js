@@ -147,7 +147,6 @@ class LK extends Component {
                 {showDirectionForm ? 'Скрыть форму' : 'Добавить новое направление'}
               </Button>
 
-              {/* New Direction Form */}
               {showDirectionForm && (
                 <div className="mt-4">
                   {formError && <p className="text-danger">{formError}</p>}

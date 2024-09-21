@@ -13,12 +13,18 @@ class AdminLK extends Component {
   state = {
     profilePictureUrl: 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg',
     abiturients: [],
-    selectedAbiturientId: null, // Track selected row
-    file: null, // Store the uploaded file
+    directionsInformations: [],
+    selectedAbiturientId: null,
+    hasDiplomOriginal: false,
+    directions: Array(3).fill({ directionId: '', prioritetNumber: '' }), // Three blocks for directions
     isAdmin: false,
   };
 
   componentDidMount() {
+    this.fetchAbiturients();
+  }
+
+  fetchAbiturients = () => {
     const { userData } = this.context;
 
     if (!userData || !userData.token) {
@@ -42,78 +48,113 @@ class AdminLK extends Component {
           });
         } else {
           window.location.href = '/';
-          return;
         }
       })
       .catch((error) => {
         console.log('Error with API request', error);
       });
-  }
 
-  // Handle row click to set selectedAbiturientId
-  handleRowClick = (abiturient) => {
-    this.setState({
-      selectedAbiturientId: abiturient.abiturient_id,
-    });
-  };
-
-  // Handle file upload
-  handleFileChange = (e) => {
-    const file = e.target.files[0];
-    this.setState({
-      file,
-    });
-  };
-
-  // Handle form submission (file upload)
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { selectedAbiturientId, file } = this.state;
-
-    if (file) {
-      console.log(`Uploading file for Abiturient ID ${selectedAbiturientId}:`, file);
-
-      // Create FormData to send the file
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('abiturient_id', selectedAbiturientId);
-
-      // API request to upload the file (implement the backend part)
-      /*
-      axios.post('http://localhost:8000/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      axios
+      .post('http://localhost:8000/directions', { abiturient_id, token })
       .then((response) => {
-        console.log('File uploaded successfully');
+        if (response.status === 200 && response.data['result'] === true) {
+          const directionsInformations = response.data['content']['directions'] || [];
+          this.setState({
+            directionsInformations: directionsInformations,
+            isLoading: false,
+          });
+        } else {
+          this.setState({
+            error: response.data.failure_message || 'Failed to load directions',
+            isLoading: false,
+          });
+        }
       })
       .catch((error) => {
-        console.log('Error uploading file', error);
+        this.setState({
+          error: 'Error with API request',
+          isLoading: false,
+        });
+        console.log('Error with API request', error);
       });
-      */
-    }
   };
 
-  // Handle form close
-  handleCloseForm = () => {
-    this.setState({
-      selectedAbiturientId: null, // Deselect the abiturient to close the form
-      file: null, // Clear file input
+  handleRowClick = (abiturient) => {
+    this.setState((prevState) => ({
+      selectedAbiturientId: prevState.selectedAbiturientId === abiturient.abiturient_id ? null : abiturient.abiturient_id,
+      hasDiplomOriginal: false, // Reset the diploma checkbox
+      directions: Array(3).fill({ directionId: '', prioritetNumber: '' }), // Reset directions
+    }));
+  };
+
+  handleDiplomCheckboxChange = () => {
+    this.setState((prevState) => ({
+      hasDiplomOriginal: !prevState.hasDiplomOriginal,
+    }));
+  };
+
+  handleDirectionChange = (index, field, value) => {
+    this.setState((prevState) => {
+      const directions = prevState.directions.map((direction, idx) => {
+        if (idx === index) {
+          return { ...direction, [field]: value }; // Update only the specified field of the current index
+        }
+        return direction; // Return the unchanged direction for others
+      });
+      return { directions };
     });
   };
 
-  // Handle redirect to LK page
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { selectedAbiturientId, hasDiplomOriginal, directions} = this.state;
+    const { userData } = this.context;
+
+    var index = 1;
+
+    const requestData = {
+      abiturient_id: userData['abiturient_id'],
+      token: userData['token'],
+      content: {
+        target_abiturient_id: selectedAbiturientId,
+        has_diplom_original: hasDiplomOriginal,
+        directions_links: directions.map((dir) => ({
+          direction_id: dir.directionId,
+          prioritet_number: index++,
+          mark: 0,
+        })),
+      },
+    };
+
+    axios.post('http://localhost:8000/abiturients/addInfo', requestData)
+      .then((response) => {
+        if (response.status === 200 && response.data['result'] === true) {
+          this.fetchAbiturients(); // Refresh the abiturients list
+        } else {
+          console.log('Failed to add information');
+        }
+      })
+      .catch((error) => {
+        console.log('Error submitting data', error);
+      });
+  };
+
+  handleCloseForm = () => {
+    this.setState({
+      selectedAbiturientId: null,
+    });
+  };
+
   handleRedirect = () => {
-    this.props.navigate('/lk'); // Navigate using navigate prop passed by the wrapper component
+    this.props.navigate('/lk');
   };
 
   render() {
-    const { profilePictureUrl, abiturients, selectedAbiturientId, isAdmin } = this.state;
+    const { profilePictureUrl, abiturients, selectedAbiturientId, isAdmin, directions, hasDiplomOriginal, directionsInformations } = this.state;
 
     return (
       <Container className="d-flex justify-content-center align-items-top bg-dark text-dark" style={{ minHeight: '100vh' }}>
-        <Card className="card p-4" style={{ maxWidth: '1200px', width: '100%', maxHeight: '900px' }}>
+        <Card className="card p-4" style={{ maxWidth: '1200px', width: '100%', maxHeight: '1200px' }}>
           <div className="text-center mb-4 bg-dark text-dark">
             <Image
               src={profilePictureUrl}
@@ -127,11 +168,8 @@ class AdminLK extends Component {
             <div className="text-center"></div>
           ) : abiturients.length > 0 ? (
             <div className="text-center">
-              <h2 className="mt-2">Панель админа</h2>
-              <br></br>
-              <h4 className="mt-2">Список абитуриентов</h4>
-              <div className='bg-dark text-dark'>
-              <div className="table-responsive">
+              <h3 className="mt-2">Список абитуриентов</h3>
+              <br />
               <Table striped bordered hover>
                 <thead>
                   <tr>
@@ -150,26 +188,47 @@ class AdminLK extends Component {
                       </tr>
                       {selectedAbiturientId === item.abiturient_id && (
                         <tr>
-                          <td colSpan="4">
+                          <td colSpan="3">
                             <Form onSubmit={this.handleSubmit}>
-                              <Form.Group controlId="fileUpload">
-                                <Form.Label>Загрузите .csv файл</Form.Label>
-                                <Form.Control
-                                  type="file"
-                                  accept=".csv"
-                                  onChange={this.handleFileChange}
+                              <Form.Group controlId="hasDiplomOriginal" className="mb-2"> {/* Reduced spacing */}
+                                <Form.Check
+                                  type="checkbox"
+                                  label="Есть оригинал диплома?"
+                                  checked={hasDiplomOriginal}
+                                  onChange={this.handleDiplomCheckboxChange}
                                 />
                               </Form.Group>
+                              
+                              {!item.is_requested && directions.map((direction, index) => {
 
-                              <div className="d-flex justify-content-between mt-2">
-                                <Button variant="primary" type="submit" disabled={!this.state.file}>
-                                  Сохранить
-                                </Button>
+                                const matchingDirection = directionsInformations.find(info => info.direction_id === direction.directionId);
 
-                                <Button variant="dark" onClick={this.handleCloseForm}>
-                                  Закрыть
-                                </Button>
-                              </div>
+                                return (
+                                  <div key={index} className="mb-2">
+                                    <Form.Group controlId={`direction${index}`}>
+                                      <Form.Label className="mb-1">
+                                        {matchingDirection
+                                          ? `Направление ${index + 1}: ${matchingDirection.direction_caption}`
+                                          : `Направление ${index + 1}: Нет данных`}
+                                      </Form.Label>
+                                      <Form.Control
+                                        type="text"
+                                        placeholder="ID направления"
+                                        value={direction.directionId}
+                                        onChange={(e) => this.handleDirectionChange(index, 'directionId', e.target.value)}
+                                        className="mb-1"
+                                      />
+                                      <Form.Label className="mb-1">Номер приоритета: {index + 1}</Form.Label>
+                                    </Form.Group>
+                                  </div>
+                                );
+                              })}
+
+
+                              
+                              <Button variant="dark" type="submit" className="mt-2">
+                                Сохранить
+                              </Button>
                             </Form>
                           </td>
                         </tr>
@@ -178,18 +237,13 @@ class AdminLK extends Component {
                   ))}
                 </tbody>
               </Table>
-              </div>
-              </div>
+              <Button variant="dark" onClick={this.handleRedirect}>
+                Вернуться в ЛК
+              </Button>
             </div>
           ) : (
             <p className="text-center">Пока нет данных для отображения.</p>
           )}
-          
-          <div className="text-center mt-4">
-            <Button variant="secondary" onClick={this.handleRedirect}>
-              Вернуться в ЛК
-            </Button>
-          </div>
           
         </Card>
       </Container>

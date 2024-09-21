@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
-import { Container, Card, Table, Button } from 'react-bootstrap';
+import { Container, Card, Table, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const DirectionsPageWithNavigate = (props) => {
+const SingleDirectionPageWithNavigate = (props) => {
     const navigate = useNavigate();
-
     const { id } = useParams();
-
     return <DirectionsPage {...props} navigate={navigate} id={id} />;
 };
 
 class DirectionsPage extends Component {
     state = {
         directionCaption: null,
-        directionPlacesNumber : 0,
+        directionPlacesNumber: 0,
         directionMinBall: 0,
+        directionCaption: null,
         places: [],
-        isLoading: true, // to show loading state
-        error: null, // to handle error state
+        isLoading: true,
+        error: null,
+        showModal: false, // Controls the visibility of the form modal
     };
 
     componentDidMount() {
@@ -37,7 +37,7 @@ class DirectionsPage extends Component {
             abiturient_id: abiturient_id,
             token: token,
             direction_id: this.props.id
-        }
+        };
 
         axios
             .post('http://localhost:8000/direction', request_data)
@@ -70,24 +70,69 @@ class DirectionsPage extends Component {
             });
     }
 
+    // Toggles the modal visibility
+    toggleModal = () => {
+        this.setState((prevState) => ({
+            showModal: !prevState.showModal,
+        }));
+    };
+
+    // Download a placeholder CSV file for empty marks
+    handleDownloadEmptyCSV = () => {
+        const { places, directionCaption } = this.state;
+    
+        // Start the CSV content with the header
+        let csvContent = "data:text/csv;charset=utf-8,abiturient_id,abiturient_name,mark\n";
+        
+        // Loop through places and append each place's data
+        places.forEach((place) => {
+            const { abiturient_id, abiturient_name, mark } = place;
+            csvContent += `${abiturient_id},${abiturient_name},${mark}\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "empty_marks_" + directionCaption.toLowerCase() + ".csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Handle the CSV file upload (can implement file processing logic here)
+    handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            console.log("File selected:", file.name);
+            // You can implement file reading logic here (e.g., parsing CSV)
+        }
+    };
+
     // Redirect back to user's LK
     handleBackToLKClick = () => {
         this.props.navigate('/lk');
     };
 
     render() {
-        const { places, directionCaption, directionPlacesNumber, directionMinBall, isLoading, error } = this.state;
+        const { places, directionCaption, directionPlacesNumber, directionMinBall, isLoading, error, showModal } = this.state;
 
         return (
             <Container className="d-flex justify-content-center align-items-top bg-light text-dark" style={{ minHeight: '100vh' }}>
                 <Card className="card p-4" style={{ maxWidth: '1200px', width: '100%', maxHeight: '900px' }}>
                     <div className="text-center">
                         <h2 className="mt-2">Направление {directionCaption}</h2>
-                        <br></br>
+                        <br />
                         <h3 className="mt-2">Настройки:</h3>
                         <h5 className="mt-2">Бюджетных мест {directionPlacesNumber}</h5>
                         <h5 className="mt-2">Проходной балл {directionMinBall}</h5>
-                        <br></br>
+                        <br />
+
+                        <div className="d-flex justify-content-end mb-3">
+                            <Button variant="primary" onClick={this.toggleModal}>
+                                Управление баллами
+                            </Button>
+                        </div>
+
                         <h3 className="mt-2">Список мест направления</h3>
                         <br />
 
@@ -100,7 +145,8 @@ class DirectionsPage extends Component {
                                 <Table striped bordered hover>
                                     <thead>
                                         <tr>
-                                            <th>Номер</th>
+                                            <th>Место</th>
+                                            <th>Id абитуриента</th>
                                             <th>Абитуриент</th>
                                             <th>Оценка</th>
                                             <th>Статус зачисления</th>
@@ -111,6 +157,7 @@ class DirectionsPage extends Component {
                                         {places.map((place) => (
                                             <tr key={place.place}>
                                                 <td>{place.place}</td>
+                                                <td>{place.abiturient_id}</td>
                                                 <td>{place.abiturient_name}</td>
                                                 <td>{place.mark}</td>
                                                 <td>{place.admission_status}</td>
@@ -124,10 +171,35 @@ class DirectionsPage extends Component {
                             <p>Нет данных для отображения.</p>
                         )}
 
-                        {/* Button to return back to LK */}
                         <Button variant="dark" onClick={this.handleBackToLKClick} className="mt-3">
                             Вернуться в ЛК
                         </Button>
+
+                        {/* Modal for uploading and downloading CSV files */}
+                        <Modal show={showModal} onHide={this.toggleModal}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Управление баллами</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group controlId="downloadEmptyMarks">
+                                        <Button variant="secondary" onClick={this.handleDownloadEmptyCSV}>
+                                            Скачать шаблон (пустой файл)
+                                        </Button>
+                                    </Form.Group>
+
+                                    <Form.Group controlId="uploadCSV" className="mt-3">
+                                        <Form.Label>Загрузить файл с баллами (CSV)</Form.Label>
+                                        <Form.Control type="file" accept=".csv" onChange={this.handleFileUpload} />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="primary" onClick={this.toggleModal}>
+                                    Сохранить и закрыть
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
                     </div>
                 </Card>
             </Container>
@@ -137,4 +209,4 @@ class DirectionsPage extends Component {
 
 DirectionsPage.contextType = AuthContext; // Accessing AuthContext for user data
 
-export default DirectionsPageWithNavigate;
+export default SingleDirectionPageWithNavigate;

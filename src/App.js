@@ -7,11 +7,10 @@ import Home from './Forms/Home';
 import LK from './Forms/LK';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import AdminLK from './Forms/AdminLK';
-import DirectionsPage from './Forms/DirectionsPage';
-import DirectionPage from './Forms/DirectionPage';
 import LKWrapper from './Forms/LK';
 import AdminLKWithNavigate from './Forms/AdminLK';
-import DirectionsPageWithNavigate from './Forms/DirectionPage';
+import DirectionsPageWithNavigate from './Forms/DirectionsPage';
+import SingleDirectionPageWithNavigate from './Forms/DirectionPage';
 
 // HomeRoute component to redirect based on authentication status
 const HomeRoute = () => {
@@ -77,7 +76,7 @@ const AppContent = () => {
           <Route path="/lk" element={<LKWrapper />} />
           <Route path="/adminLK" element={<AdminLKWithNavigate />} />
           <Route path='/directions' element={<DirectionsPageWithNavigate />} />
-          <Route path='/direction/:id' element={<DirectionsPageWithNavigate />} />
+          <Route path='/direction/:id' element={<SingleDirectionPageWithNavigate />} />
         </Routes>
       </Container>
     </>
