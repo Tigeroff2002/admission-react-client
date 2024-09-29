@@ -12,14 +12,12 @@ import AdminLKWithNavigate from './Forms/AdminLK';
 import DirectionsPageWithNavigate from './Forms/DirectionsPage';
 import SingleDirectionPageWithNavigate from './Forms/DirectionPage';
 
-// HomeRoute component to redirect based on authentication status
 const HomeRoute = () => {
   const { userData } = useContext(AuthContext);
-  const isAuthenticated = !!userData.token; // Assuming token is present when authenticated
+  const isAuthenticated = !!userData.token;
   return !isAuthenticated ? <Home/> : <Navigate to="/lk" />;
 };
 
-// AppContent component contains the navigation and routes
 const AppContent = () => {
   const { logout } = useContext(AuthContext);
 
@@ -83,7 +81,6 @@ const AppContent = () => {
   );
 };
 
-// Main App component with Router and AuthProvider
 const App = () => {
   return (
     <Router>

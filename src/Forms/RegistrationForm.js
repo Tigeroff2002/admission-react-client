@@ -20,7 +20,7 @@ class RegistrationForm extends Component {
         secondName: '',
         email: '',
         password: '',
-        is_admin: false, // Add is_admin to formData
+        is_admin: false,
       },
       errors: {
         firstName: '',
@@ -43,7 +43,7 @@ class RegistrationForm extends Component {
     this.setState(prevState => ({
       formData: {
         ...prevState.formData,
-        [name]: type === 'checkbox' ? checked : value, // Handle checkbox input
+        [name]: type === 'checkbox' ? checked : value,
       },
     }));
 
@@ -148,8 +148,8 @@ class RegistrationForm extends Component {
       return;
     }
 
-    const { login } = this.context; // Access login function from AuthContext
-    const { navigate } = this.props; // Get navigate from props
+    const { login } = this.context;
+    const { navigate } = this.props;
 
     const first_name = firstName;
     const second_name = secondName;
@@ -162,11 +162,10 @@ class RegistrationForm extends Component {
             const { abiturient_id, token, is_admin } = response.data;
             const obj = { abiturient_id, token, is_admin };
 
-            login(obj); // Call login function
+            login(obj);
 
-            navigate('/lk'); // Navigate to '/lk'
+            navigate('/lk');
           } else {
-            // Update error messages and styles on login failure
             this.setState({
               errorMessages: {
                 email: 'Invalid email or password',
@@ -184,7 +183,6 @@ class RegistrationForm extends Component {
       })
       .catch((error) => {
         console.error('Error with API request', error);
-        // Optionally update error messages and styles on error
         this.setState({
           errorMessages: {
             email: 'An error occurred',

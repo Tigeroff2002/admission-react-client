@@ -12,15 +12,15 @@ const DirectionsPageWithNavigate = (props) => {
 class DirectionsPage extends Component {
   state = {
     directions: [],
-    isLoading: true, // to show loading state
-    error: null, // to handle error state
+    isLoading: true,
+    error: null
   };
 
   componentDidMount() {
     const { userData } = this.context;
 
     if (!userData || !userData.token) {
-      window.location.href = '/'; // Redirect to home if no token
+      window.location.href = '/';
       return;
     }
 
@@ -52,7 +52,6 @@ class DirectionsPage extends Component {
       });
   }
 
-  // Redirect back to user's LK
   handleBackToLKClick = () => {
     this.props.navigate('/lk');
   };
@@ -98,7 +97,6 @@ class DirectionsPage extends Component {
               <p>Нет данных для отображения.</p>
             )}
 
-            {/* Button to return back to LK */}
             <Button variant="dark" onClick={this.handleBackToLKClick} className="mt-3">
               Вернуться в ЛК
             </Button>
@@ -109,6 +107,6 @@ class DirectionsPage extends Component {
   }
 }
 
-DirectionsPage.contextType = AuthContext; // Accessing AuthContext for user data
+DirectionsPage.contextType = AuthContext;
 
 export default DirectionsPageWithNavigate;

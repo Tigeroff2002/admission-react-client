@@ -1,7 +1,6 @@
-// src/pages/Home.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { Container, Card, ListGroup } from 'react-bootstrap'; // Импорт компонентов из react-bootstrap
+import { Container, Card, ListGroup } from 'react-bootstrap';
 import '../styles.css';
 
 const Home = () => {

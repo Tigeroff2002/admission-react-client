@@ -19,7 +19,7 @@ class DirectionsPage extends Component {
         places: [],
         isLoading: true,
         error: null,
-        showModal: false, // Controls the visibility of the form modal
+        showModal: false
     };
 
     componentDidMount() {
@@ -70,21 +70,17 @@ class DirectionsPage extends Component {
             });
     }
 
-    // Toggles the modal visibility
     toggleModal = () => {
         this.setState((prevState) => ({
             showModal: !prevState.showModal,
         }));
     };
 
-    // Download a placeholder CSV file for empty marks
     handleDownloadEmptyCSV = () => {
         const { places, directionCaption } = this.state;
     
-        // Start the CSV content with the header
         let csvContent = "data:text/csv;charset=utf-8,abiturient_id,abiturient_name,mark\n";
         
-        // Loop through places and append each place's data
         places.forEach((place) => {
             const { abiturient_id, abiturient_name, mark } = place;
             csvContent += `${abiturient_id},${abiturient_name},${mark}\n`;
@@ -99,12 +95,10 @@ class DirectionsPage extends Component {
         document.body.removeChild(link);
     };
 
-    // Handle the CSV file upload (can implement file processing logic here)
     handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
             console.log("File selected:", file.name);
-            // You can implement file reading logic here (e.g., parsing CSV)
         }
     };
 
@@ -175,7 +169,6 @@ class DirectionsPage extends Component {
                             Вернуться в ЛК
                         </Button>
 
-                        {/* Modal for uploading and downloading CSV files */}
                         <Modal show={showModal} onHide={this.toggleModal}>
                             <Modal.Header closeButton>
                                 <Modal.Title>Управление баллами</Modal.Title>
@@ -207,6 +200,6 @@ class DirectionsPage extends Component {
     }
 }
 
-DirectionsPage.contextType = AuthContext; // Accessing AuthContext for user data
+DirectionsPage.contextType = AuthContext;
 
 export default SingleDirectionPageWithNavigate;

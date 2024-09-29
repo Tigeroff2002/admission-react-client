@@ -17,7 +17,7 @@ class LK extends Component {
     profilePictureUrl: 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg',
     isAdmin: false,
     showAdminLK: false,
-    showDirectionForm: false, // State to manage form visibility
+    showDirectionForm: false,
     directionName: '',
     budgetPlaces: '',
     minBall: '',
@@ -58,22 +58,18 @@ class LK extends Component {
       });
   }
 
-  // Function to handle admin button click
   handleAdminButtonClick = () => {
     this.props.navigate('/adminLK');
   };
 
-  // Handle input changes for the new direction form
   handleInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value, formError: '' });
   };
 
-  // Handle submission of the new direction form
   handleSubmitDirection = (e) => {
     e.preventDefault();
     const { directionName, budgetPlaces, minBall } = this.state;
 
-    // Validation
     if (!directionName) {
       this.setState({ formError: 'Direction name is required' });
       return;
@@ -103,7 +99,7 @@ class LK extends Component {
       .then((response) => {
         if (response.status === 200 && response.data['result'] === true) {
           const directionId = response.data['direction_id'];
-          this.props.navigate(`/direction/${directionId}`); // Redirect to new direction page
+          this.props.navigate(`/direction/${directionId}`);
         } else {
           this.setState({ formError: response.data.failure_message || 'Failed to add new direction' });
         }
@@ -114,7 +110,6 @@ class LK extends Component {
       });
   };
 
-  // Toggle the visibility of the direction form
   toggleDirectionForm = () => {
     this.setState((prevState) => ({ showDirectionForm: !prevState.showDirectionForm }));
   };
@@ -142,7 +137,6 @@ class LK extends Component {
               </Button>
               <br />
               <br />
-              {/* Button to show/hide the direction form */}
               <Button variant="dark" className="mt-3" onClick={this.toggleDirectionForm}>
                 {showDirectionForm ? 'Скрыть форму' : 'Добавить новое направление'}
               </Button>

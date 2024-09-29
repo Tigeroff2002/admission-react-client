@@ -37,8 +37,8 @@ class LoginForm extends Component {
 
     this.state = { ...this.initialState };
 
-    this.emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
-    this.passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/; // Regex for password validation
+    this.emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    this.passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
     this.passwordInvalidMessage = 'Пароль должен содержать как минимум 8 символов, один заглавный символ и одну цифру.';
     this.emailInvalidMessage = 'Введите корректный email';
   }
@@ -123,8 +123,8 @@ class LoginForm extends Component {
     e.preventDefault();
 
     const { email, password } = this.state.formData;
-    const { login } = this.context; // Access login function from AuthContext
-    const { navigate } = this.props; // Get navigate from props
+    const { login } = this.context;
+    const { navigate } = this.props;
 
     axios
       .post('http://localhost:8000/login', { email, password })
@@ -134,11 +134,10 @@ class LoginForm extends Component {
             const { abiturient_id, token, is_admin } = response.data;
             const obj = { abiturient_id, token, is_admin };
 
-            login(obj); // Call login function
+            login(obj);
 
-            navigate('/lk'); // Navigate to '/lk'
+            navigate('/lk');
           } else {
-            // Update error messages and styles on login failure
             this.setState({
               errorMessages: {
                 email: 'Invalid email or password',
@@ -154,7 +153,6 @@ class LoginForm extends Component {
       })
       .catch((error) => {
         console.error('Error with API request', error);
-        // Optionally update error messages and styles on error
         this.setState({
           errorMessages: {
             email: 'An error occurred',

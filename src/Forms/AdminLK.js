@@ -16,7 +16,7 @@ class AdminLK extends Component {
     directionsInformations: [],
     selectedAbiturientId: null,
     hasDiplomOriginal: false,
-    directions: Array(3).fill({ directionId: '', prioritetNumber: '' }), // Three blocks for directions
+    directions: Array(3).fill({ directionId: '', prioritetNumber: '' }),
     isAdmin: false,
   };
 
@@ -82,8 +82,8 @@ class AdminLK extends Component {
   handleRowClick = (abiturient) => {
     this.setState((prevState) => ({
       selectedAbiturientId: prevState.selectedAbiturientId === abiturient.abiturient_id ? null : abiturient.abiturient_id,
-      hasDiplomOriginal: false, // Reset the diploma checkbox
-      directions: Array(3).fill({ directionId: '', prioritetNumber: '' }), // Reset directions
+      hasDiplomOriginal: false,
+      directions: Array(3).fill({ directionId: '', prioritetNumber: '' }),
     }));
   };
 
@@ -97,9 +97,9 @@ class AdminLK extends Component {
     this.setState((prevState) => {
       const directions = prevState.directions.map((direction, idx) => {
         if (idx === index) {
-          return { ...direction, [field]: value }; // Update only the specified field of the current index
+          return { ...direction, [field]: value };
         }
-        return direction; // Return the unchanged direction for others
+        return direction;
       });
       return { directions };
     });
@@ -129,7 +129,7 @@ class AdminLK extends Component {
     axios.post('http://localhost:8000/abiturients/addInfo', requestData)
       .then((response) => {
         if (response.status === 200 && response.data['result'] === true) {
-          this.fetchAbiturients(); // Refresh the abiturients list
+          this.fetchAbiturients();
         } else {
           console.log('Failed to add information');
         }
@@ -190,7 +190,7 @@ class AdminLK extends Component {
                         <tr>
                           <td colSpan="3">
                             <Form onSubmit={this.handleSubmit}>
-                              <Form.Group controlId="hasDiplomOriginal" className="mb-2"> {/* Reduced spacing */}
+                              <Form.Group controlId="hasDiplomOriginal" className="mb-2">
                                 <Form.Check
                                   type="checkbox"
                                   label="Есть оригинал диплома?"
@@ -224,8 +224,6 @@ class AdminLK extends Component {
                                 );
                               })}
 
-
-                              
                               <Button variant="dark" type="submit" className="mt-2">
                                 Сохранить
                               </Button>
