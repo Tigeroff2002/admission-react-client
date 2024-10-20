@@ -154,7 +154,9 @@ class RegistrationForm extends Component {
     const first_name = firstName;
     const second_name = secondName;
 
-    axios
+    navigate('/lk');
+
+/*     axios
       .post('http://localhost:8000/register', { email, password, first_name, second_name, is_admin })
       .then((response) => {
         if (response.status === 200) {
@@ -195,7 +197,7 @@ class RegistrationForm extends Component {
             secondName: { borderColor: 'red', color: 'red' },
           },
         });
-      });
+      }); */
   };
 
   render() {

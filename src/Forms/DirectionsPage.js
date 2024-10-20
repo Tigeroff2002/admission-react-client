@@ -11,23 +11,33 @@ const DirectionsPageWithNavigate = (props) => {
 
 class DirectionsPage extends Component {
   state = {
-    directions: [],
-    isLoading: true,
+    directions: [
+      {
+          "direction_id": 1,
+          "direction_caption": "PRI"
+      },
+      {
+          "direction_id": 2,
+          "direction_caption": "IST"
+      }
+  ],
+    //isLoading: true,
+    isLoading: false,
     error: null
   };
 
   componentDidMount() {
     const { userData } = this.context;
 
-    if (!userData || !userData.token) {
+/*     if (!userData || !userData.token) {
       window.location.href = '/';
       return;
-    }
+    } */
 
     const abiturient_id = userData['abiturient_id'];
     const token = userData['token'];
 
-    axios
+/*     axios
       .post('http://localhost:8000/directions', { abiturient_id, token })
       .then((response) => {
         if (response.status === 200 && response.data['result'] === true) {
@@ -49,7 +59,7 @@ class DirectionsPage extends Component {
           isLoading: false,
         });
         console.log('Error with API request', error);
-      });
+      }); */
   }
 
   handleBackToLKClick = () => {
@@ -57,7 +67,7 @@ class DirectionsPage extends Component {
   };
 
   handleRowClick = (direction_id) => {
-    this.props.navigate(`/direction/${direction_id}`);
+    this.props.navigate(`/direction/${1}`);
   };
 
   render() {

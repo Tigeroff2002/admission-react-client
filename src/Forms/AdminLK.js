@@ -12,7 +12,16 @@ const AdminLKWithNavigate = (props) => {
 class AdminLK extends Component {
   state = {
     profilePictureUrl: 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg',
-    abiturients: [],
+    abiturients: [
+      {
+          "abiturient_id": 2,
+          "abiturient_name": "Nikita Portnov"
+      },
+      {
+          "abiturient_id": 3,
+          "abiturient_name": "Dmitry Kirsenko"
+      }
+  ],
     directionsInformations: [],
     selectedAbiturientId: null,
     hasDiplomOriginal: false,
@@ -27,16 +36,16 @@ class AdminLK extends Component {
   fetchAbiturients = () => {
     const { userData } = this.context;
 
-    if (!userData || !userData.token) {
+/*     if (!userData || !userData.token) {
       window.location.href = '/';
       return;
-    }
+    } */
 
     const abiturient_id = userData['abiturient_id'];
     const token = userData['token'];
     const isAdmin = userData.is_admin || false;
 
-    axios
+/*     axios
       .post('http://localhost:8000/abiturients/all', { abiturient_id, token })
       .then((response) => {
         if (response.status === 200 && response.data['result'] === true) {
@@ -76,7 +85,7 @@ class AdminLK extends Component {
           isLoading: false,
         });
         console.log('Error with API request', error);
-      });
+      }); */
   };
 
   handleRowClick = (abiturient) => {
@@ -126,7 +135,7 @@ class AdminLK extends Component {
       },
     };
 
-    axios.post('http://localhost:8000/abiturients/addInfo', requestData)
+/*     axios.post('http://localhost:8000/abiturients/addInfo', requestData)
       .then((response) => {
         if (response.status === 200 && response.data['result'] === true) {
           this.fetchAbiturients();
@@ -136,7 +145,7 @@ class AdminLK extends Component {
       })
       .catch((error) => {
         console.log('Error submitting data', error);
-      });
+      }); */
   };
 
   handleCloseForm = () => {

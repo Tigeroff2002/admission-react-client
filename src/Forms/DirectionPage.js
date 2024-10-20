@@ -12,12 +12,30 @@ const SingleDirectionPageWithNavigate = (props) => {
 
 class DirectionsPage extends Component {
     state = {
-        directionCaption: null,
-        directionPlacesNumber: 0,
-        directionMinBall: 0,
-        directionCaption: null,
-        places: [],
-        isLoading: true,
+        directionCaption: "PRI",
+        directionPlacesNumber: 10,
+        directionMinBall: 50,
+        places: [
+            {
+                "place": 1,
+                "abiturient_id": 1,
+                "abiturient_name": "Kirill Parakhin",
+                "mark": 84,
+                "admission_status": "request_in_progress",
+                "prioritet_number": 1,
+                "has_original_diplom": true
+            },
+            {
+                "place": 2,
+                "abiturient_id": 2,
+                "abiturient_name": "Semen Bogdan",
+                "mark": 82,
+                "admission_status": "request_in_progress",
+                "prioritet_number": 1,
+                "has_original_diplom": false
+            }
+        ],
+        isLoading: false,
         error: null,
         showModal: false
     };
@@ -25,10 +43,10 @@ class DirectionsPage extends Component {
     componentDidMount() {
         const { userData } = this.context;
 
-        if (!userData || !userData.token) {
+/*         if (!userData || !userData.token) {
             window.location.href = '/';
             return;
-        }
+        } */
 
         const abiturient_id = userData['abiturient_id'];
         const token = userData['token'];
@@ -39,7 +57,7 @@ class DirectionsPage extends Component {
             direction_id: this.props.id
         };
 
-        axios
+/*         axios
             .post('http://localhost:8000/direction', request_data)
             .then((response) => {
                 if (response.status === 200 && response.data['result'] === true) {
@@ -67,7 +85,7 @@ class DirectionsPage extends Component {
                     isLoading: false,
                 });
                 console.log('Error with API request', error);
-            });
+            }); */
     }
 
     toggleModal = () => {

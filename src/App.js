@@ -47,7 +47,7 @@ const AppContent = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-            {
+{/*             {
               isAuthenticated ? (
                 <>
               <Nav.Link onClick={handleLogout}>Выйти из системы</Nav.Link>
@@ -60,7 +60,12 @@ const AppContent = () => {
               <Nav.Link as={Link} to="/login">Страница авторизации</Nav.Link>
               </>
             )
-          }
+          } */}
+              <Nav.Link as={Link} to="/register">Страница регистрации</Nav.Link>
+              <Nav.Link as={Link} to="/login">Страница авторизации</Nav.Link>
+              <Nav.Link onClick={handleLogout}>Выйти из системы</Nav.Link>
+              <Nav.Link onClick={handleAllDirections}>Все направления</Nav.Link>
+              <Nav.Link onClick={handleLK}>Ваш ЛК</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

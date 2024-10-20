@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Container, Card, Table, Image, Button, Form } from 'react-bootstrap';
-import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,8 +11,25 @@ const LKWrapper = (props) => {
 
 class LK extends Component {
   state = {
-    name: '',
-    directionsLinks: [],
+    name: 'Kirill Parakhin',
+    directionsLinks: [
+      {
+        "direction_id": 1,
+        "direction_caption": "PRI",
+        "place": 1,
+        "mark": 84,
+        "admission_status": "request_in_progress",
+        "priotitet_number": 1
+    },
+    {
+        "direction_id": 2,
+        "direction_caption": "IST",
+        "place": 2,
+        "mark": 78,
+        "admission_status": "request_in_progress",
+        "priotitet_number": 2
+    }
+    ],
     profilePictureUrl: 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg',
     isAdmin: false,
     showAdminLK: false,
@@ -27,16 +43,15 @@ class LK extends Component {
   componentDidMount() {
     const { userData } = this.context;
 
-    if (!userData || !userData.token) {
+/*     if (!userData || !userData.token) {
       window.location.href = '/';
       return;
-    }
-
+    } */
     const isAdmin = userData.is_admin || false;
     const abiturient_id = userData['abiturient_id'];
     const token = userData['token'];
 
-    axios
+/*     axios
       .post('http://localhost:8000/lk', { abiturient_id, token })
       .then((response) => {
         if (response.status === 200 && response.data['result'] === true) {
@@ -55,7 +70,7 @@ class LK extends Component {
       })
       .catch((error) => {
         console.log('Error with API request', error);
-      });
+      }); */
   }
 
   handleAdminButtonClick = () => {
@@ -95,7 +110,9 @@ class LK extends Component {
       token,
     };
 
-    axios.post('http://localhost:8000/directions/addNew', requestData)
+    this.props.navigate(`/direction/${1}`);
+
+/*     axios.post('http://localhost:8000/directions/addNew', requestData)
       .then((response) => {
         if (response.status === 200 && response.data['result'] === true) {
           const directionId = response.data['direction_id'];
@@ -107,7 +124,8 @@ class LK extends Component {
       .catch((error) => {
         console.log('Error with API request', error);
         this.setState({ formError: 'Error with API request' });
-      });
+      }); */
+
   };
 
   toggleDirectionForm = () => {

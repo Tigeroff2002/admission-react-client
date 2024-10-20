@@ -126,7 +126,9 @@ class LoginForm extends Component {
     const { login } = this.context;
     const { navigate } = this.props;
 
-    axios
+    navigate('/lk');
+
+/*     axios
       .post('http://localhost:8000/login', { email, password })
       .then((response) => {
         if (response.status === 200) {
@@ -163,7 +165,7 @@ class LoginForm extends Component {
             password: { borderColor: 'red', color: 'red' },
           },
         });
-      });
+      }); */
   };
 
   render() {
